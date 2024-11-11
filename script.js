@@ -1,5 +1,12 @@
 document.getElementById('uploadButton').addEventListener('click', function() {
   var fileInput = document.getElementById('fileInput');
+
+  // Check if fileInput element exists
+  if (!fileInput) {
+    alert('File input element not found.');
+    return;
+  }
+
   var file = fileInput.files[0];
 
   // Check if a file was selected
