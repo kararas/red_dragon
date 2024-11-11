@@ -8,8 +8,6 @@ document.getElementById('uploadButton').addEventListener('click', function() {
     return;
   }
 
-
-  
   // Validate the file type (should be 'application/pdf')
   if (file.type !== 'application/pdf') {
     alert('Please select a PDF file.');
@@ -32,18 +30,22 @@ document.getElementById('uploadButton').addEventListener('click', function() {
   })
   .then(data => {
     if (data.success) {
-      // Send a message to the extension with the URL of the uploaded PDF
-      let extensionId = "coipnbadfcdapccchnllaibdnfeajhcl"; // Replace with your actual extension ID
-      chrome.runtime.sendMessage(extensionId, {
-        action: 'printPDF',
-        fileUrl: '/uploads/' + data.filename // Assuming the server responds with the filename
-      }, function(response) {
-        if (chrome.runtime.lastError) {
-          console.error("Error sending message to extension:", chrome.runtime.lastError);
-        } else {
-          console.log("Message sent to extension:", response);
-        }
-      });
+      // Send a message to the extension if running in a Chrome extension context
+      if (typeof chrome !== 'undefined' && chrome.runtime) {
+        let extensionId = "coipnbadfcdapccchnllaibdnfeajhcl"; // Replace with your actual extension ID
+        chrome.runtime.sendMessage(extensionId, {
+          action: 'printPDF',
+          fileUrl: '/uploads/' + data.filename // Assuming the server responds with the filename
+        }, function(response) {
+          if (chrome.runtime.lastError) {
+            console.error("Error sending message to extension:", chrome.runtime.lastError);
+          } else {
+            console.log("Message sent to extension:", response);
+          }
+        });
+      } else {
+        console.log("chrome.runtime is not available.");
+      }
     } else {
       console.error('Failed to upload PDF file. Server response:', data);
     }
