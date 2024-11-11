@@ -33,7 +33,7 @@ document.getElementById('uploadButton').addEventListener('click', function() {
   .then(data => {
     if (data.success) {
       // Send a message to the extension with the URL of the uploaded PDF
-      let extensionId = "YOUR_EXTENSION_ID"; // Replace with your actual extension ID
+      let extensionId = "coipnbadfcdapccchnllaibdnfeajhcl"; // Replace with your actual extension ID
       chrome.runtime.sendMessage(extensionId, {
         action: 'printPDF',
         fileUrl: '/uploads/' + data.filename // Assuming the server responds with the filename
